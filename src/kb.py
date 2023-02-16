@@ -1,9 +1,7 @@
 import board
 from kmk.scanners.keypad import MatrixScanner
 from kmk.scanners.encoder import RotaryioEncoder
-
 from kmk.kmk_keyboard import KMKKeyboard as _KMKKeyboard
-#from kmk.quickpin.pro_micro.boardsource_blok import pinout as pins
 from kmk.scanners import DiodeOrientation
 
 """
@@ -76,6 +74,7 @@ class KMKKeyboard(_KMKKeyboard):
     tx = board.TX
     #SCL=  board.SCL
     #SDA=  board.SDA
+    powersave_pin = board.P0_13
 
 
     #Scancode mapping (skip 6, 13, 29, max = 5X7 = 35)
@@ -86,6 +85,14 @@ class KMKKeyboard(_KMKKeyboard):
         21, 22, 23, 24, 25, 26, 27, 20,    57, 64, 63, 62, 61, 60, 59, 58,         
                    30, 31, 32, 33, 34,      71, 70, 69, 68, 67,  
                    35,36,                                72,73 #<-- second scanner
+    ]
+
+    leds_mapping = [
+            27, 26, 18, 17, 8, 7,                   39, 40, 49, 50, 58, 59 , 
+            28, 25, 19, 16, 9, 6,                   38, 41, 48, 51, 57, 60,
+         31,29, 24, 20, 15, 10, 5,                  37, 42, 47, 52, 56, 61, 63,
+            30, 23, 21, 14, 11, 4, 3, 2,    34, 35, 36, 43, 46, 53, 55, 62,  
+                   22, 13, 12, 0, 1,            33, 32, 44, 45, 54 
     ]
 
     def __init__(self):

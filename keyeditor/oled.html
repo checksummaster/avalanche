@@ -1,41 +1,207 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Holo and Filled Text SVG</title>
-  </head>
-  <style>
-    svg {
-      border: 1px solid #f10e0e;
+
+<head>
+  <title>Holo and Filled Text SVG</title>
+</head>
+<style>
+  body  {
+    background-color: #808080;
+  }
+  svg {
+    border: 1px solid #f10e0e;
+  }
+</style>
+
+<body>
+  <svg width="128" height="64" id="svg1">>
+    <rect x="0" y="0" width="128" height="64" fill="#000000" />
+
+    <!--Layers-->
+    <text x="16" y="16" text-anchor="middle" dominant-baseline="middle" fill="#FFFFFF" font-size="26">B</text>
+    <rect x="0" y="0" width="32" height="32" fill="rgba(0, 0, 0, 0)" stroke="#FFFFFF" stroke-width="2" />
+
+    <!--CapLock-->
+    <text x="48" y="16" text-anchor="middle" dominant-baseline="middle" fill="#FFFFFF" font-size="26">C</text>
+    <rect x="32" y="0" width="32" height="32" fill="rgba(0, 0, 0, 0)" stroke="#FFFFFF" stroke-width="2" />
+    
+
+    <rect x="64" y="0" width="32" height="32" fill="rgba(0, 0, 0, 0)" stroke="#FFFFFF" stroke-width="2" />
+    <rect x="96" y="0" width="32" height="32" fill="rgba(0, 0, 0, 0)" stroke="#FFFFFF" stroke-width="2" />
+
+    <rect x="0" y="32" width="32" height="32" fill="rgba(0, 0, 0, 0)" stroke="#FFFFFF" stroke-width="2" />
+    <rect x="32" y="32" width="32" height="32" fill="rgba(0, 0, 0, 0)" stroke="#FFFFFF" stroke-width="2" />
+    <rect x="64" y="32" width="32" height="32" fill="rgba(0, 0, 0, 0)" stroke="#FFFFFF" stroke-width="2" />
+    <rect x="96" y="32" width="32" height="32" fill="rgba(0, 0, 0, 0)" stroke="#FFFFFF" stroke-width="2" />
+
+
+    <!--<image x="0" y="32" width="32" height="32" href="recursion.svg" />-->
+    <g transform="translate(64,0) scale(0.5,0.5)">
+      <svg>
+        <path d="M32 8L4 58h56L32 8z"
+        stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke="#FFFFFF"
+        fill="none" data-name="layer2" stroke-linejoin="round"></path>
+        <path d="M32 41V25m-1.5 22" stroke-width="2" stroke-miterlimit="10"
+        stroke-linecap="round" stroke="#FFFFFF" fill="none" data-name="layer1"
+        stroke-linejoin="round"></path>
+        <circle stroke-width="2" stroke-miterlimit="10" stroke-linecap="round"
+        stroke="#FFFFFF" fill="none" r="2" cy="48" cx="32" data-name="layer1" stroke-linejoin="round"></circle>
+      </svg>
+    </g>
+    
+
+  </svg><br>
+  <svg width="128" height="64" id="svg2">
+    <rect x="0" y="0" width="128" height="64" fill="#000000" />
+
+    <text x="2" y="14"  fill="#FFFFFF" font-size="18">L</text>
+    <rect x="0" y="0" width="16" height="16" fill="rgba(0, 0, 0, 0)" stroke="#FFFFFF" stroke-width="2" />
+
+    <!--<text x="4" y="11" fill="#000000" font-size="12" stroke="#FFFFFF" stroke-width="1">Base</text>
+    <text x="32" y="11" fill="#000000" font-size="12" stroke="#FFFFFF" stroke-width="1">Lower</text>
+    <text x="67" y="11" fill="#000000" font-size="12" stroke="#FFFFFF" stroke-width="1">Raise</text>
+    <text x="102" y="11" fill="#000000" font-size="12" stroke="#FFFFFF" stroke-width="1">Cap</text>-->
+  </svg><br>
+
+  <svg width="128" height="64" id="svg3">
+    <rect x="0" y="0" width="128" height="64" fill="#000000" />
+
+    <text x="2" y="14"  fill="#FFFFFF" font-size="18">R</text>
+    <rect x="0" y="0" width="16" height="16" fill="rgba(0, 0, 0, 0)" stroke="#FFFFFF" stroke-width="2" />
+
+    <!--<text x="4" y="11" fill="#000000" font-size="12" stroke="#FFFFFF" stroke-width="1">Base</text>
+    <text x="32" y="11" fill="#000000" font-size="12" stroke="#FFFFFF" stroke-width="1">Lower</text>
+    <text x="67" y="11" fill="#000000" font-size="12" stroke="#FFFFFF" stroke-width="1">Raise</text>
+    <text x="102" y="11" fill="#000000" font-size="12" stroke="#FFFFFF" stroke-width="1">Cap</text>-->
+  </svg><br>
+  Temp image (color)<br>
+  <img id="img1"/><img id="img2"/><img id="img3"/><br />
+  Result (Monochrome)<br />
+  <canvas width="128" height="192"></canvas><br />
+
+  <button onclick="download('oled.bmp', )">Download</button>
+</body>
+<script>
+  function download( filename ) {
+    data = canvasToMonochromeBMP(canvas);
+    type = 'image/bmp';
+    var file = new Blob([data], {
+      type: type
+    });
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+      window.navigator.msSaveOrOpenBlob(file, filename);
+    else { // Others
+      var a = document.createElement("a"),
+        url = URL.createObjectURL(file);
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }, 0);
     }
-  </style>
-  <body>
-    <svg width="128" height="64">
-      <rect x="0" y="0" width="128" height="64" fill="#000000"/>
-      
-      <text x="4" y="11"  fill="#FFFFFF" font-size="12">Base</text>
-      <text x="32" y="11"  fill="#000000" font-size="12" stroke="#FFFFFF" stroke-width="0.1">Lower</text>
-      <text x="67" y="11"  fill="#000000" font-size="12" stroke="#FFFFFF" stroke-width="0.1">Raise</text>
-      <text x="102" y="11"  fill="#000000" font-size="12" stroke="#FFFFFF" stroke-width="0.1">Cap</text>
-
-      <text x="4" y="30"  fill="#FFFFFF" font-size="12">BT#1</text>
-      <text x="102" y="30"  fill="#FFFFFF" font-size="12">Sync</text>
-
-      
-      <rect x="0" y="0" width="32" height="14" fill="rgba(0, 0, 0, 0)" stroke="#FFFFFF" stroke-width="0.5"/>
-      <!--<rect x="32" y="0" width="32" height="14" fill="rgba(0, 0, 0, 0)" stroke="#FFFFFF" stroke-width="1"/>
-      <rect x="64" y="0" width="32" height="14" fill="rgba(0, 0, 0, 0)" stroke="#FFFFFF" stroke-width="1"/>
-      <rect x="96" y="0" width="32" height="14" fill="rgba(0, 0, 0, 0)" stroke="#FFFFFF" stroke-width="1"/>-->
+  }
 
 
+  function canvasToMonochromeBMP(canvas) {
+    // Get canvas context and image data
+    let ctx = canvas.getContext("2d");
+    let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-    </svg><br>
-    <svg width="128" height="64">
-      <rect x="0" y="0" width="128" height="64" fill="#000000"/>
+    // Determine the number of padding bytes needed
+    let rowSize = Math.floor((1 + canvas.width) / 32) * 32;
+    let padding = rowSize - (canvas.width);
 
-      <text x="4" y="11"  fill="#000000" font-size="12" stroke="#FFFFFF" stroke-width="0.5">Base</text>
-      <text x="32" y="11"  fill="#000000" font-size="12" stroke="#FFFFFF" stroke-width="0.5">Lower</text>
-      <text x="67" y="11"  fill="#000000" font-size="12" stroke="#FFFFFF" stroke-width="0.5">Raise</text>
-      <text x="102" y="11"  fill="#000000" font-size="12" stroke="#FFFFFF" stroke-width="0.5">Cap</text>
-    </svg>
-  </body>
+    // Create an array for the BMP data
+    let bmpData = [];
+
+    // Add the BMP header (14bytes)
+    bmpData.push(66, 77); // "BM"
+    bmpData.push(...intToLittleEndian(14 + 40 + 8 + (rowSize + padding) * canvas.height, 4)); // Total file size
+    bmpData.push(0, 0, 0, 0); // Unused
+    bmpData.push(...intToLittleEndian(14 + 40 + 8, 4)); // Offset to pixel data
+
+    // Add the DIB header (40bytes)
+    bmpData.push(...intToLittleEndian(40, 4)); // DIB header size
+    bmpData.push(...intToLittleEndian(canvas.width, 4)); // Image width
+    bmpData.push(...intToLittleEndian(canvas.height, 4)); // Image height
+    bmpData.push(1, 0, 1, 0); // 1 plane and 1 bit per pixel
+    bmpData.push(0, 0, 0, 0); // No compression
+    bmpData.push(...intToLittleEndian(0, 4)); // Uncompressed size
+    bmpData.push(0, 0, 0, 0); // Pixels per meter (unused)
+    bmpData.push(0, 0, 0, 0); // Pixels per meter (unused)
+    bmpData.push(0, 0, 0, 0); // Number of colors (2^1 = 2)
+    bmpData.push(0, 0, 0, 0); // Important color count (all)
+
+    // Add the color palette (8bytes)
+    bmpData.push(0, 0, 0, 0); // Black
+    bmpData.push(255, 255, 255, 0); // White
+
+    // Add the pixel data
+    for (let y = canvas.height - 1; y >= 0; y--) {
+      let row = [];
+      for (let x = 0; x < canvas.width; x++) {
+        let i = (y * canvas.width + x) * 4;
+        let color = (imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2]) / 3;
+        imageData.data[i] = imageData.data[i + 1] = imageData.data[i + 2] = color >= 128 ? 0xFF : 0; // let's make it grayscale for see what you will get
+        row.push(color >= 128 ? 1 : 0);
+      }
+      for (let i = 0; i < row.length; i += 8) {
+        let byte = 0;
+        for (let j = 0; j < 8 && i + j < row.length; j++) {
+          byte = (byte << 1) | row[i + j];
+        }
+        bmpData.push(byte);
+      }
+      for (let i = 0; i < padding; i++) {
+        bmpData.push(0);
+      }
+    }
+
+    ctx.putImageData(imageData, 0, 0); // let's see what you will get
+
+    // Return the BMP data as a Unt8Array
+    return new Uint8Array(bmpData);
+  }
+
+  // Helper function to convert an integer to a little-endian array of bytes
+  function intToLittleEndian(num, size) {
+    let arr = [];
+    for (let i = 0; i < size; i++) {
+      arr.push(num & 0xff);
+      num >>= 8;
+    }
+    return arr;
+  }
+
+  function drawcanvas(svg,img,offset) {
+    var xml = new XMLSerializer().serializeToString(svg);
+    var image64 = 'data:image/svg+xml;base64,' + btoa(xml);
+    img.onload = function () {
+      var canvas = document.querySelector('canvas');
+      canvas.getContext('2d').drawImage(img, 0, offset);
+    }
+    img.src = image64;
+  }
+
+
+
+
+  var svg1 = document.getElementById("svg1");
+  var img1 = document.getElementById('img1');
+  var svg2 = document.getElementById("svg2");
+  var img2 = document.getElementById('img2');
+  var svg3 = document.getElementById("svg3");
+  var img3 = document.getElementById('img3');
+  drawcanvas(svg1,img1,0);
+  drawcanvas(svg2,img2,64);
+  drawcanvas(svg3,img3,128);
+
+
+
+  
+</script>
+
 </html>
