@@ -128,10 +128,10 @@ keyboard.keymap = [
     ],
     [  #RAISE                           NUMPAD                                                                                                              Arrorws + config (todo)
                  _______, XXXXXXX, KC.NUMLOCK, KC.KP_SLASH, KC.KP_ASTERISK, KC.KP_MINUS,                                               XXXXXXX,   XXXXXXX, XXXXXXX,  KC.PSCREEN,   KC.SCROLLLOCK, KC.PAUSE,
-                 _______, KC.KP_0, KC.KP_1,    KC.KP_2,     KC.KP_3,        KC.KP_PLUS,                                                _______,   _______, _______,  _______,      _______,   XXXXXXX,
+                 _______, KC.KP_0, KC.KP_7,    KC.KP_8,     KC.KP_9,        KC.KP_PLUS,                                                _______,   _______, _______,  _______,      _______,   XXXXXXX,
         _______, _______, KC.KP_0, KC.KP_4,    KC.KP_5,     KC.KP_6,        KC.KP_ENTER,                                               _______,   _______, _______,  _______,      _______,   XXXXXXX, KC.PS_TOG,
-                 _______, KC.KP_0, KC.KP_7,    KC.KP_8,     KC.KP_9,        KC.KP_DOT, _______,  _______,            _______, _______, XXXXXXX,   _______, _______,  XXXXXXX,      XXXXXXX,   _______,
-                               _______, _______, _______, _______,          KC.KP_ENTER,                                  _______, LOWER,  _______, RAISE,  _______,
+                 _______, KC.KP_0, KC.KP_1,    KC.KP_2,     KC.KP_3,        KC.KP_DOT, _______,  _______,            _______, _______, XXXXXXX,   _______, _______,  XXXXXXX,      XXXXXXX,   _______,
+                                                  _______, _______, _______, _______,_______,                            _______, LOWER,  _______, RAISE,  _______,
         #encoder
         _______,
         _______, 
