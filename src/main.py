@@ -9,7 +9,7 @@ from kmk.modules.layers import Layers
 from kmk.modules.modtap import ModTap
 from kmk.keys import KC
 from kmk.modules.split import  SplitSide
-from side import split_side, banner, debug
+from side import split_side, banner, debug, usebluetooth
 
 print(banner)
 mem = gc.mem_free()
@@ -17,7 +17,10 @@ keyboard = KMKKeyboard()
 keyboard.modules.append(Layers())
 keyboard.extensions.append(MediaKeys())
 keyboard.modules.append(MouseKeys())
-keyboard.modules.append(Split(split_type=SplitType.BLE, split_side=split_side, debug_enabled=debug))
+if usebluetooth:
+    keyboard.modules.append(Split(split_type=SplitType.BLE, split_side=split_side, debug_enabled=debug))
+else:
+    keyboard.modules.append(Split( split_side=split_side, debug_enabled=debug))
 keyboard.modules.append(ModTap())
 
 
@@ -45,21 +48,21 @@ L___W   = (1,1,1)
 
 Leds = [
     [   #Main  KC.RESET
-                 L___B  ,  L______,  LED_NUML, L______,  L______,  L______,                                              L______,  L______,  L______,  L______,  LED_SCRL, L______,
+                 L___B  ,  L______,  LED_NUML, L______,  L______,  L______,                                              L______,  L______,  L______,  L______,  LED_SCRL, L___B,
                  L______,  L______,  L______,  L______,  L______,  L______,                                              L______,  L______,  L______,  L______,  L______,  L______,
        LED_CAPS, L______,  L______,  L______,  L______,  L______,  L______,                                              L______,  L______,  L______,  L______,  L______,  L______, L______,
                  L______,  L______,  L______,  L______,  L______,  L______,  L______,  L______,      L______  ,  L______,  L______,  L______,  L______,  L______,  L______,  L______,
                                                L______,  L______,  L______,  L______,  L______,      L______  ,  L______,  L______,  L______,  L______
     ],
     [  #LOWER
-                 L___G  ,  L______,  L______,  L______,  L______,  L______,                                              L______,  L______,  L______,  L______,  L______,  L______,
+                 L___G  ,  L______,  L______,  L______,  L______,  L______,                                              L______,  L______,  L______,  L______,  L______,  L___G,
                  L______,  L______,  L______,  L___R  ,  L______,  L______,                                              L______,  L______,  L___R  ,  L______,  L___Y  ,  L______,
        LED_CAPS, L______,  L______,  L___R  ,  L___R  ,  L___R  ,  L______,                                              L______,  L___R  ,  L___R  ,  L___R  ,  L___C  ,  L______, L______,
                  L______,  L______,  L______,  L______,  L______,  L______,  L______,  L______,      L______,  L______,  L______,  L___Y  ,  L___C  ,  L______,  L______,  L______,
                                                L______,  L______,  L______,  L______,  L______,      L______,  L______,  L______,  L______,  L______    
     ],
     [  #RAISE 
-                 L___R  ,  L______,  L______,  L______,  L______,  L______,                                              L______,  L______,  L______,  L______,  L______,  L______,
+                 L___R  ,  L______,  L______,  L______,  L______,  L______,                                              L______,  L______,  L______,  L______,  L______,  L___R,
                  L______,  L______,  L___B  ,  L___B  ,  L___B  ,  L___G  ,                                              L______,  L______,  L______,  L______,  L______,  L______,
        LED_CAPS, L______,  L______,  L___B  ,  L___B  ,  L___B  ,  L___R,                                                L______,  L______,  L______,  L______,  L______,  L______, L______,
                  L______,  L______,  L___B  ,  L___B  ,  L___B  ,  L______,  L______,  L______,      L______,  L______,  L______,  L______,  L______,  L______,  L______,  L______,
@@ -70,7 +73,7 @@ Leds = [
 
 
 from ext import ext
-_ext = ext(Leds, keyboard.leds_mapping)
+_ext = ext(Leds, keyboard.leds_mapping,L___R)
 keyboard.extensions.append(_ext)
 gc.collect()
 print("---Memory used by custom extension: " + str(mem - gc.mem_free()))
@@ -128,10 +131,10 @@ keyboard.keymap = [
     ],
     [  #RAISE                           NUMPAD                                                                                                              Arrorws + config (todo)
                  _______, XXXXXXX, KC.NUMLOCK, KC.KP_SLASH, KC.KP_ASTERISK, KC.KP_MINUS,                                               XXXXXXX,   XXXXXXX, XXXXXXX,  KC.PSCREEN,   KC.SCROLLLOCK, KC.PAUSE,
-                 _______, KC.KP_0, KC.KP_7,    KC.KP_8,     KC.KP_9,        KC.KP_PLUS,                                                _______,   _______, _______,  _______,      _______,   XXXXXXX,
+                 _______, KC.KP_0, KC.KP_1,    KC.KP_2,     KC.KP_3,        KC.KP_PLUS,                                                _______,   _______, _______,  _______,      _______,   XXXXXXX,
         _______, _______, KC.KP_0, KC.KP_4,    KC.KP_5,     KC.KP_6,        KC.KP_ENTER,                                               _______,   _______, _______,  _______,      _______,   XXXXXXX, KC.PS_TOG,
-                 _______, KC.KP_0, KC.KP_1,    KC.KP_2,     KC.KP_3,        KC.KP_DOT, _______,  _______,            _______, _______, XXXXXXX,   _______, _______,  XXXXXXX,      XXXXXXX,   _______,
-                                                  _______, _______, _______, _______,_______,                            _______, LOWER,  _______, RAISE,  _______,
+                 _______, KC.KP_0, KC.KP_7,    KC.KP_8,     KC.KP_9,        KC.KP_DOT, _______,  _______,            _______, _______, XXXXXXX,   _______, _______,  XXXXXXX,      XXXXXXX,   _______,
+                               _______, _______, _______, _______,          KC.KP_ENTER,                                  _______, LOWER,  _______, RAISE,  _______,
         #encoder
         _______,
         _______, 
@@ -145,10 +148,10 @@ keyboard.keymap = [
 print("---Memory used by keys: " + str(mem - gc.mem_free()))
 
 if __name__ == '__main__':
-    keyboard.debug_enabled = False
+    keyboard.debug_enabled = True
     gc.collect()
     print("---Free memory " + str(gc.mem_free()))
-    if split_side == SplitSide.LEFT:
+    if split_side == SplitSide.LEFT and usebluetooth:
         keyboard.go(hid_type=HIDModes.BLE,ble_name='AlexKeyboard')
     else:
         keyboard.go()

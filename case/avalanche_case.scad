@@ -1,9 +1,5 @@
-//include <nutsnbolts/cyl_head_bolt.scad>;
-//include <nutsnbolts/data-access.scad>;
 include <./KeyV2/includes.scad>
  
-
-
 $font = "Segoe UI Symbol:style=Bold";
 
 pcb_points = [[81.740171,110.323135],[124.110371,108.485434],[128.598892,127.733396],[146.996902,123.971322],[166.055043,123.967253],[166.055043,123.967253],[184.617357,128.428034],[201.626725,137.085463],[215.993451,149.169715],[240.383745,120.615118],[226.372957,108.455818],[226.161832,54.667135],[217.209331,49.970723],[195.286002,49.2243],[195.285999,31.067171],[176.528893,30.77428],[176.235999,29.067181],[157.478899,28.774284],[157.186002,26.567173],[138.648897,26.56718],[138.356003,28.774278],[119.598893,29.067179],[119.306,32.314284],[77.780048,34.75951],[79.89412699992839,75.09852794741323],[60.85857,76.097056],[61.829661,94.593607],[80.86349449039737,93.59515583927146]];
@@ -12,13 +8,42 @@ top_point = [[81.740171,110.323135],[124.110371,108.485434],[128.598892,127.7333
 
 
 
-
 // Hole in comment are central and we make space for battery by remove it
 hole1 = [[210.899641, 123.194258],[137.384115, 46.836171],/*[139.021284, 64.413276],[177.151281, 68.923262],*/[80.333192, 89.113988],[99.48792, 90.613548],[97.46632, 51.538002],/*[98.49095, 71.589648],*/[168.023177, 107.422185],[145.253172, 107.34218],[190.393201, 112.772207],[177.524117, 48.836171]];
 
-
-
 hole2 = [[223.247088, 101.330639],[200.247094, 89.630633],[223.247095, 56.930644]];
+
+// Screw size for top
+screwheadheight = 5; //TODO mesure it
+screwheaddiameter = 4;
+screwholesize = 2.4;
+
+// Magnets place
+magnet_pos = [[90,100],[90,70],[90,40],[187,100],[187,70],[187,40],[210,70],[225,120]];
+magnet_size = 16;
+magnet_height = 0.5;
+
+top_plate_thickness = 1.5;
+bottom_plate_thickness = 1.2; 
+pcb_thickness = 1.4;
+
+spacer_wall_size = 8;
+top_plate_to_pcb = 5.0 - top_plate_thickness; // cherry space = 5mm ;// top spacer
+bottom_plate_to_pcb = 6; // Bottom spacer (Space for battery)
+
+bordersize = 0.5; // wall over the top  plate
+
+keyhole_size = 13.8;
+potsize_width = 7.7;    // Small rectangle to give space where potentiometer can be set
+potsize_height = 16.7;  // 
+
+EVQWGD001_widht = 17;
+EVQWGD001_height = 14;
+
+
+tolerance=0.5; // distance between pcb and wall
+wallsize=4; // wall thickness   
+wallheight =  bottom_plate_to_pcb + pcb_thickness + top_plate_to_pcb + top_plate_thickness + bordersize; // The height of the wall (from inside the case aka bottom space)
 
 
 keys = [
@@ -67,7 +92,6 @@ keypos = [
                30, 31, 32, 33, 34,      69, 68, 67, 66, 65,     
 ];
 
-
 keyrow = [   
     0, 0, 0, 0, 0, 0,                   0, 0, 0, 0, 0, 0,     
     1, 1, 1, 1, 1, 1,                   1, 1, 1, 1, 1, 1,
@@ -75,6 +99,71 @@ keyrow = [
     3, 3, 3, 3, 3, 3, 3, 3,       3, 3, 3, 3, 3, 3, 3, 3,
              4, 4, 4, 4, 4,       4, 4, 4, 4, 4 // <-space bar shape
 ];
+
+keycol  = [   
+    1, 2, 3, 4, 5, 6,                   6, 5, 4, 3, 2, 1,     
+    1, 2, 3, 4, 5, 6,                   6, 5, 4, 3, 2, 1,
+ 0, 1, 2, 3, 4, 5, 6,                   6, 5, 4, 3, 2, 1, 0,
+    1, 2, 3, 4, 5, 6, 7, 8,       8, 7, 6, 5, 4, 3, 2, 1,
+             4, 5, 6, 7, 8,       8, 7, 6, 5, 4 // <-space bar shape
+];
+
+
+// 3d print layout (put keys side by side for eazy print
+
+// 3x6
+/*
+keyrow2 = [   
+    0, 0, 0, 0, 0, 0,                   0, 0, 0, 0, 0, 0,     
+    1, 1, 1, 1, 1, 1,                   1, 1, 1, 1, 1, 1,
+ 2, 2, 2, 2, 2, 2, 2,                   2, 2, 2, 2, 2, 2, 2,
+    0, 0, 0, 0, 0, 0, 2, 2,       2, 2, 1, 1, 1, 1, 1, 1,
+             0, 0, 0, 0, 0,       1, 1, 1, 1, 1 // <-space bar shape
+];
+
+keycol2  = [   
+    1, 2, 3, 4, 5, 6,                   6, 5, 4, 3, 2, 1,     
+    1, 2, 3, 4, 5, 6,                   6, 5, 4, 3, 2, 1,
+ 3, 1, 2, 3, 4, 5, 6,                   6, 5, 4, 3, 2, 1, 6,
+    1, 2, 3, 4, 5, 6, 1, 2,       5, 4, 6, 5, 4, 3, 2, 1,
+             1, 2, 3, 4, 5,       5, 4, 3, 2, 1 // <-space bar shape
+];
+
+keypage2  = [   
+    0, 0, 0, 0, 0, 0,                   1, 1, 1, 1, 1, 1,     
+    0, 0, 0, 0, 0, 0,                   1, 1, 1, 1, 1, 1,
+ 2, 0, 0, 0, 0, 0, 0,                   1, 1, 1, 1, 1, 1, 2,
+    2, 2, 2, 2, 2, 2, 2, 2,       2, 2, 2, 2, 2, 2, 2, 2,
+             3, 3, 3, 3, 3,       3, 3, 3, 3, 3 // <-space bar shape
+];
+*/
+
+//4x6
+keyrow2 = [   
+    0, 0, 0, 0, 0, 0,                   0, 0, 0, 0, 0, 0,     
+    1, 1, 1, 1, 1, 1,                   1, 1, 1, 1, 1, 1,
+ 2, 2, 2, 2, 2, 2, 2,                   2, 2, 2, 2, 2, 2, 2,
+    3, 3, 3, 3, 3, 3, 2, 2,       2, 2, 3, 3, 3, 3, 3, 3,
+             0, 0, 0, 0, 0,       1, 1, 1, 1, 1 // <-space bar shape
+];
+
+keycol2  = [   
+    1, 2, 3, 4, 5, 6,                   6, 5, 4, 3, 2, 1,     
+    1, 2, 3, 4, 5, 6,                   6, 5, 4, 3, 2, 1,
+ 3, 1, 2, 3, 4, 5, 6,                   6, 5, 4, 3, 2, 1, 6,
+    1, 2, 3, 4, 5, 6, 1, 2,       5, 4, 6, 5, 4, 3, 2, 1,
+             1, 2, 3, 4, 5,       5, 4, 3, 2, 1 // <-space bar shape
+];
+
+keypage2  = [   
+    0, 0, 0, 0, 0, 0,                   1, 1, 1, 1, 1, 1,     
+    0, 0, 0, 0, 0, 0,                   1, 1, 1, 1, 1, 1,
+ 2, 0, 0, 0, 0, 0, 0,                   1, 1, 1, 1, 1, 1, 2,
+    0, 0, 0, 0, 0, 0, 2, 2,       2, 2, 1, 1, 1, 1, 1, 1,
+             3, 3, 3, 3, 3,       3, 3, 3, 3, 3 // <-space bar shape
+];
+
+
 
 esc = "Esc"; //or ??//"⎋";
 pageup = "⇞"; 
@@ -88,7 +177,7 @@ home = "⌂";
 end = "End";
 del = "Del"; //"␡";
 backspace= "⌫";
-tab = "⇥";
+tab = "⇥↹";
 tab2 = "⇤";
 shift = "⇧";
 prevtrack = "⏮";
@@ -110,78 +199,43 @@ righmouse = "🖰";
 enter = "⏎";
 func = "func";
 
-//▲▼◀▶
+
+//▲▼◀▶ 
 
 
 main_text = [   
-            "⎋",    "1!", "2@", "3#", "4$", "5%",                                     "6^", "7&", "8*", "9(", "0)", "\|",       
-            "⇥",    "Q",  "W",  "E",  "R",  "T",                                      "Y",  "U",  "I",  "O",  "P",  "[{",
-   "⇪",     "⇧",    "A",  "S",  "D",  "F",  "G",                                      "H",  "J",  "K",  "L",  ";:", "'\"", "]}",
-            "⌃",    "Z",  "X",  "C",  "V",  "B",  "DEL", "⌘",           "Ins", "⌫", "N",  "M",  ",<", ".>", "/?", "⌃",
-                                "🔇", "`~", "=+", "␣",  "⏎" ,         "⏎", "L",   "-_", "R", "⎙" 
+            "Esc",    "1!", "2@", "3#", "4$", "5%",                                     "6^", "7&", "8 *", "9 (", "0 )", "\\ |",       
+            "Tab",    "Q",  "W",  "E",  "R",  "T",                                      "Y",  "U",  "I",  "O",  "P",  "[ {",
+   "Caps",  "Shift",    "A",  "S",  "D",  "F",  "G",                                      "H",  "J",  "K",  "L",  "; :", "' \"", "] }",
+            "Ctrl",    "Z",  "X",  "C",  "V",  "B",  "Del", "⌘",           "Ins", "⌫", "N",  "M",  ", <", ". >", "/ ?", "Ctrl",
+                                "🔇", "` ~", "=+", "␣",  "↵" ,         "↵", "Func",   "- _", "Func", "⎙" 
 ];
 
 func_text = [   
             "",  "F1", "F2", "F3",  "F4",  "F5",                           "F6", "F7",  "F8","F9", "F10",  "F11",       
-            "",  "",   "🖰L", "🖰↑", "🖰R",  "⌫",                           "DEL","⌂  ","▲", "END", "PgUp",   "",
-       "",  "",  "APP","🖰←", "🖰↓", "🖰→",  "DEL",                          "⌫", "◀",   "▼", "▶",   "PgDn",   "",   "F12",
-            "",  "",   "",   "🖰M",   "",   "",  "", "",          "",  "",  "",   "PgUp",    "PgDn", "",  "",     "",
-                                "",   "",  "",  "", "Alt" ,     "Alt",  "",  "=", "", ""
+            "",  "",   "⬤", "▲", "⬤",  "⌫",                             "Del","⌂  ","▲", "END", "PgUp",   "",
+       "Lock",  "",  "APP","◀", "▼", "▶",  "Del",                               "⌫", "◀",   "▼", "▶",   "PgDn",   "",   "F12",
+            "",  "",   "",   "⬤",   "",   "",  "", "",          "",  "",  "",   "PgUp",    "PgDn", "",  "",     "",
+                                "",   "",  "",  "", "" ,     "",  "1",  "", "2", ""
 ];
 
 func_text2 = [   
             "",  "",   "NUM","/", "*",  "-",                           "", "", "","PrtSc", "ScrLK",  "Pause",       
             "",  "0",  "7",  "8", "9",  "+",                           "", "", "","",      "",       "",
-       "",  "",  "0",  "4",  "5", "6",  "⏎",                          "", "", "", "",      "",      "",   "",
+       "",  "",  "0",  "4",  "5", "6",  "⏎",                          "", "", "", "",      "",      "",   "Pow",
             "",  "0",  "1",  "2", "3",   ".",  "", "",          "", "","", "", "", "",      "",      "",
-                                "",   "",  "",  "", "" ,     "",  "", "", "", ""
+                                "",   "",  "",  "", "Alt" ,     "Alt",  "", "", "", ""
 ];
 
-top_plate_thickness = 2.5;
-bottom_plate_thickness = 1.2; 
-pcb_thickness = 1.4;
-
-spacer_wall_size = 8;
-top_plate_to_pcb = 5.0 - top_plate_thickness; // cherry space = 5mm ;// top spacer
-bottom_plate_to_pcb = 6; // Bottom spacer (Space for battery)
-
-bordersize = 0.5; // wall over the top  plate
-
-keyhole_size = 13.8;
-potsize_width = 7.7;    // Small rectangle to give space where potentiometer can be set
-potsize_height = 16.7;  // 
 
 
-tolerance=0.5; // distance between pcb and wall
-wallsize=4; // wall thickness   
-wallheight =  bottom_plate_to_pcb + pcb_thickness + top_plate_to_pcb + top_plate_thickness + bordersize; // The height of the wall (from inside the case aka bottom space)
 
-hole_m1 = 1.2;
-hole_m2 = 2.4; 
-hole_m3 = 3.4; 
-head_m1  = 3.6;
-head_m2  = 4.0;
-nut_tol = 0.5; // Nut tolerance
-
-head1_size = head_m2;
-head2_size = head_m2;
-hole1_size = hole_m2;
-hole2_size = hole_m2;
-hole1_type = "M2x10";
-hole2_type = "M2x10";
-nut1_type = "M2";
-nut2_type = "M2";
-
-magnet_size = 16;
-magnet_height = 0.5;
-
-magnet_pos = [[90,100],[90,70],[90,40],[187,100],[187,70],[187,40],[210,70],[225,120]];
 
 module drawhole(height,wall_1 = 0, wall_2 = 0) {
     for (a = [ 0 : len(hole1) - 1 ]) {
         point=hole1[a];
         translate([point[0],point[1],0]){
-          cylinder(d1=hole1_size + (wall_1/2),d2=hole1_size + (wall_2/2),h=height, $fn=100);
+          cylinder(d1=screwholesize + (wall_1/2),d2=screwholesize + (wall_2/2),h=height, $fn=100);
         }
     }
 }
@@ -190,7 +244,7 @@ module drawdisplayhole(height,wall_1 = 0, wall_2 = 0) {
     for (a = [ 0 : len(hole2) - 1 ]){
         point=hole2[a];
         translate([point[0],point[1],0]){
-          cylinder(d1=hole2_size + wall_1/2,d2=hole2_size + wall_2/2,h=height, $fn=100);
+          cylinder(d1=screwholesize + wall_1/2,d2=screwholesize + wall_2/2,h=height, $fn=100);
         }
     }
 }
@@ -200,60 +254,13 @@ module drawinsert()
     for (a = [ 0 : len(hole1) - 1 ]) {
         point=hole1[a];
         translate([point[0],point[1],2]){
-          cylinder(d=2.5,h=30, $fn=100);
+          cylinder(d=3.4,h=30, $fn=100);
         }
     }
     for (a = [ 0 : len(hole2) - 1 ]) {
         point=hole2[a];
         translate([point[0],point[1],2]){
-          cylinder(d=2.5,h=30, $fn=100);
-        }
-    }
-}
-
-module draw_screw()
-{
-    for (a = [ 0 : len(hole1) - 1 ]) {
-        point=hole1[a];
-        color("green") translate([point[0],point[1],bottom_plate_thickness + bottom_plate_to_pcb + pcb_thickness + top_plate_to_pcb]) {
-            screw(hole1_type);
-        }
-    }
-    
-    for (a = [ 0 : len(hole2) - 1 ]) {
-        point=hole2[a];
-        color("green") translate([point[0],point[1],bottom_plate_thickness + bottom_plate_to_pcb + pcb_thickness + top_plate_to_pcb]) {
-            screw(hole2_type);
-        }
-    }
-}
-
-module drawnuts(height,wall = 0) { // Draw twice the deep to not have bolt that go to far bellow
-    for (a = [ 0 : len(hole1) - 1 ]) {
-        point=hole1[a];
-        translate([point[0],point[1], 2 * _get_nut_height(hole1_type)  ]){
-          
-          nutcatch_parallel(nut1_type, clh=nut_tol);
-          
-        }
-        translate([point[0],point[1], _get_nut_height(hole1_type)  ]){
-          
-          nutcatch_parallel(nut1_type, clh=nut_tol);
-          
-        }
-    }
-    
-    for (a = [ 0 : len(hole2) - 1 ]) {
-        point=hole2[a];
-        translate([point[0],point[1], 2 * _get_nut_height(hole2_type) + nut_tol ]){
-          nutcatch_parallel(nut2_type, clh=nut_tol);
-        }
-    }
-    
-    for (a = [ 0 : len(hole2) - 1 ]) {
-        point=hole2[a];
-        translate([point[0],point[1], _get_nut_height(hole2_type) + nut_tol ]){
-          nutcatch_parallel(nut2_type, clh=nut_tol);
+          cylinder(d=3.4,h=30, $fn=100);
         }
     }
 }
@@ -262,45 +269,87 @@ module drawscrewhead() {
     for (a = [ 0 : len(hole1) - 1 ]) {
         point=hole1[a];
         translate([point[0],point[1],0]){
-          cylinder(d=head1_size + nut_tol,h=_get_head_height(hole1_type) + nut_tol, $fn=100);
+          cylinder(d=screwheaddiameter,h=screwheadheight, $fn=100);
         }
     }
 }
 
-module drawkey(height) {
+module drawkey(height, have_EVQWGD001) {
     for (a = [ 0 : len(keys) - 1 ]) {
         point=keys[a];
         translate([point[0],point[1],0]) {
             rotate(a=[0,0,-point[2]]  ) {
-                cube(size = [keyhole_size,keyhole_size,height] , center = true);
-                if (a == 20 || a == 27 || a == 30 ) cube(size = [potsize_width,potsize_height,height] , center = true);
+                if (have_EVQWGD001 && a == 30) {
+                    cube(size = [EVQWGD001_widht,EVQWGD001_height,height] , center = true);
+                }
+                else {
+                    cube(size = [keyhole_size,keyhole_size,height] , center = true);
+                    if (a == 20 || a == 27 || a == 30 ) cube(size = [potsize_width,potsize_height,height] , center = true);
+                }
             }
         }
     }
 }
 
-module drawmagnet(offset) {
+module drawmagnet() {
     for (a = [ 0 : len(magnet_pos) - 1 ]) {
         point=magnet_pos[a];
-        translate([point[0],point[1],offset]) {
+        translate([point[0],point[1],bottom_plate_thickness]) {
             //cube(size = [magnet_size,magnet_size,100] , center = true);
-            cylinder(d=magnet_size,h = magnet_height + 1, center= true);
+            difference() {
+                cylinder(d=magnet_size,h = 4.4+0.2, center= false);
+                cylinder(d=9,h = bottom_plate_to_pcb, center= false);
+                
+
+            }
         }
     }
 }
 
-module draw_topplate() {
+module draw_topplate(isright=false) {
     difference() {
         union() {
             color("green",0.25) linear_extrude(height = top_plate_thickness) polygon(points = top_point);
             color("red") translate([0,0,-top_plate_to_pcb]) drawhole(top_plate_to_pcb,spacer_wall_size,spacer_wall_size);
         }
         union() {
-            drawkey(3*top_plate_thickness);
+            drawkey(3*top_plate_thickness,isright);
             translate([0,0,-top_plate_to_pcb]) drawhole(top_plate_thickness + top_plate_to_pcb);
-            translate([0,0,-(_get_head_height(hole1_type) + nut_tol-top_plate_to_pcb)]) drawscrewhead();
+            translate([0,0,0]) drawscrewhead();
         }
     }
+}
+
+module _draw_testplate(add=0) {
+    difference() {
+        color("green",0.25) cube([65,25,top_plate_thickness]);
+        translate([0,10,0]) union() {
+            translate([15,0,0]) {
+                union() { // EVQWGD001 or pot
+                    cube(size = [EVQWGD001_widht+add,EVQWGD001_height+add,3*top_plate_thickness] , center = true);
+                    cube(size = [potsize_width+add,potsize_height+add,3*top_plate_thickness] , center = true);
+                }
+            }
+            
+            translate([35,0,0]) { //swith
+            union() { // Potentio
+                    cube(size = [keyhole_size+add,keyhole_size+add,3*top_plate_thickness] , center = true);
+                    cube(size = [potsize_width+add,potsize_height+add,3*top_plate_thickness] , center = true);
+                } 
+            }
+            
+            translate([55,0,0]) { //swith
+                cube(size = [keyhole_size+add,keyhole_size+add,3*top_plate_thickness] , center = true);
+            }
+        }
+    }
+}
+
+module draw_testplate(add=0) {
+    translate([0,0*25,0]) _draw_testplate(0);
+    translate([0,1*25,0]) _draw_testplate(1);
+    translate([0,2* 25,0]) _draw_testplate(2);
+    translate([0,3* 25,0]) _draw_testplate(3);
 }
 
 module draw_bottomplate() {
@@ -327,10 +376,14 @@ module draw_bottomplate() {
                         square(tolerance*2+wallsize, center=true);
                     };
                 }
+                
                 color("red")translate([0,0,bottom_plate_thickness])  {
                     drawhole(bottom_plate_to_pcb,spacer_wall_size*2,spacer_wall_size);
                     drawdisplayhole(bottom_plate_to_pcb,spacer_wall_size*2,spacer_wall_size);
                 } 
+                
+                
+                color("orange") drawmagnet(); 
                 
                 
              
@@ -338,10 +391,7 @@ module draw_bottomplate() {
         }
         union() {
             drawinsert();
-            //drawhole(bottom_plate_to_pcb+bottom_plate_thickness+1);
-            //drawdisplayhole(bottom_plate_to_pcb+bottom_plate_thickness+1);
-            color("orange") drawmagnet(bottom_plate_thickness - magnet_height/2);
-            drawnuts();            
+            //color("orange") drawmagnet(bottom_plate_thickness - magnet_height/2);           
             color("green") translate([200,45,bottom_plate_thickness+bottom_plate_to_pcb+pcb_thickness]) cube([14,10,wallheight]);
             color("red") translate([226,70,bottom_plate_thickness+bottom_plate_to_pcb]) cube([10,9,wallheight]);
             color("blue") translate([226,90,bottom_plate_thickness+bottom_plate_to_pcb]) cube([10,9,wallheight]);  
@@ -351,9 +401,6 @@ module draw_bottomplate() {
 }
 
 
-
-
-
 module drawkeycap(height,offset)
 {
     for (a = [ 0 : len(keys) - 1 ]) {
@@ -361,8 +408,18 @@ module drawkeycap(height,offset)
         } else if (a == 30 ) {
             draw_pot(a,height,offset);
         } else {
-            //draw_pot(a,height,offset);
             drawkeycap_single(a,height,offset,offset==0?true:false);
+        }
+    }
+}
+
+module drawkeycap_inline(offset,page,makelegend) 
+{
+    for (a = [ 0 : len(keys) - 1 ]) {
+        if (a == 6 || a == 13 || a == 29 ) {
+        } else if (a == 30 ) {
+        } else {
+            drawkeycap_single(a,0,offset,offset==0?true:false,true,page,makelegend);
         }
     }
 }
@@ -376,37 +433,93 @@ module draw_pot(a,height,offset)
     
 }
 
-module drawkeycap_single(a,height,offset,inv) {
+
+
+module drawkeycap_single(a,height,offset,inv,layoutmode,page,makelegend) {
     
-    point=keys[a];
     ind = search(a+offset,keypos);
+    row = keyrow[ind[0]]+1;
+    col = keycol[ind[0]]+1;
+    
+    row2 = keyrow2[ind[0]];
+    col2 = keycol2[ind[0]];
+    page2 = keypage2[ind[0]];
+    
+    angle_3d_print = 0; //225;
+    dist_x_3d_print = 19;
+    dist_y_3d_print = 19;
+    
+    // nova elfin = 132 x 74 = 8x4  = 144 x 72
+    
+    //point=layoutmode?[col2 * 19,row2 * 19, 180]:keys[a];
+    
+    point=layoutmode?[col2 * dist_x_3d_print,row2 * dist_y_3d_print, 180]:keys[a];
+    
     text1 = main_text[ind[0]]; // str(a); 
     funckey = func_text[ind[0]];
     funckey2 = func_text2[ind[0]];
-    row = keyrow[ind[0]]+1;
-    r = point[2] + [0,0,0,0,0,180][row];
+    
+    r = layoutmode?180:(point[2] + [0,0,0,0,0,180][row]);
     $inverted_dish = (row == 5);
     $inset_legend_depth = 0.4;
     $cherry_bevel = false;
-    $stem_support_type = disabled;
-    $support_type = disable; 
-    translate([point[0],point[1],height]) {
-         rotate(a=[0,0,-r ] ) mirror([inv?1:0,0,0]) {
-            
-            if (len(text1) == 2) { // Keÿwith shift value
-                text2 = text1[1];
-                text1 = text1[0];
-                legend(text2, position = [0,-0.8] , size=4.5) legend(text1, position = [0,0.8] , size=4.5) front_legend(funckey,position = [0,-0.2] , size=3.5) front_legend(funckey2,position = [0,0.7] , size=3) cherry_row(row)  key();
-            } else if (len(text1) > 2) { // Lot of characters
-                legend(text1, position = [0,0] , size=5)  front_legend(funckey,position = [0,-0.2] , size=3.5) front_legend(funckey2,position = [0,0.7] , size=3) cherry_row(row)   key();
-            }else{
-            
-                legend(text1, position = [0,0] , size=8)  front_legend(funckey,position = [0,-0.2] , size=3.5) front_legend(funckey2,position = [0,0.7] , size=3) cherry_row(row)  key();
+    //$stem_support_type = disabled;
+    //$support_type = disable;
+    
+    
+
+ 
+   
+    if (!layoutmode || page == page2 ){ 
+    
+    
+    
+
+    
+        translate([point[0],point[1],height]) {
+             rotate(a=[layoutmode?angle_3d_print:0,0,-r ] ) mirror([inv?1:0,0,0]) {
+                specialcar = (text1 == "↵" || text1 == "␣" || text1 == "⌘")?true:false;
+                if (true) {
+                    if (makelegend)
+                    {
+                        intersection() {
+                        
+                            legend(text1, position = specialcar?[0,0]:[0,-0.8] , size=specialcar?10:len(text1) <4?4.5:3.5)
+                            legend(funckey, position = [0,+0.8] , size=len(funckey) == 1?4.5:3.5)
+                            front_legend(funckey2,position = [0,0] , size=len(funckey2) == 1?4.5:3.5)
+                            cherry_row(row)  legends($inset_legend_depth);
+                            
+                            
+                            cherry_row(row) key();
+                        }
+                        
+                        //difference() {
+                            //legends($inset_legend_depth);
+                            //inner_total_shape();
+                        //}
+                    }
+                    else {
+                        legend(text1, position = specialcar?[0,0]:[0,-0.8] , size=specialcar?10:len(text1) <4?4.5:3.5)
+                        legend(funckey, position = [0,+0.8] , size=len(funckey) == 1?4.5:3.5)
+                        front_legend(funckey2,position = [0,0] , size=len(funckey2) == 1?4.5:3.5)
+                        brimmed_stem_support()
+                        cherry_row(row)  key();
+                    } 
+                } else {
+                    cherry_row(row)  key();
+                }
             }
         }
     }
-    
 }
+
+module keycap(page,legend)
+{
+    translate([0,0,0]) drawkeycap_inline(35,page,legend);
+    translate([330,0,0]) mirror([1,0,0]) drawkeycap_inline(0,page,legend);
+
+}
+
 
 module draw_samplekey() 
 {
@@ -420,18 +533,77 @@ module draw_samplekey()
     drawkeycap_single(34,20,35);
 }
 
+module draw_singlekey_test()
+{
+    //drawkeycap_single(2,20,35,false,false,0,true);
+    drawkeycap_single(2,20,35,false,false,0,false);
+    
+
+}
+
+
+
 module drawkeyboard(keyoffset)
 {
     draw_bottomplate();
-    translate([0,0,bottom_plate_thickness + bottom_plate_to_pcb + pcb_thickness + top_plate_to_pcb ]) rotate([0,0,0]) draw_topplate();
+    translate([0,0,bottom_plate_thickness + bottom_plate_to_pcb + pcb_thickness + top_plate_to_pcb ]) rotate([0,0,0]) draw_topplate(keyoffset==35);
     drawkeycap(20,keyoffset);
-    //draw_screw();
-}
-//drawkeyboard(0);
-//draw_samplekey();
 
-translate([-250,0,0]) drawkeyboard(35);
-translate([250,0,0]) mirror([1,0,0]) drawkeyboard(0);
+}
+
+
+module printdemo() {
+    translate([-250,0,0]) drawkeyboard(35);
+    translate([250,0,0]) mirror([1,0,0]) drawkeyboard(0);
+}
+
+module test_insert()
+{
+    bottom = 2;
+    bwidth = 6;
+    cube([bwidth,60,bottom], 0,0);
+    difference(){
+        translate([0,0,bottom]) cube([bwidth,60,bottom_plate_to_pcb], 0,0);
+        union() {
+            translate([bwidth/2,5,bottom])cylinder(d=3.0,h=30, $fn=100);
+            translate([bwidth/2,10,bottom])cylinder(d=3.1,h=30, $fn=100);
+            translate([bwidth/2,15,bottom])cylinder(d=3.2,h=30, $fn=100);
+            translate([bwidth/2,20,bottom])cylinder(d=3.3,h=30, $fn=100);
+            translate([bwidth/2,25,bottom])cylinder(d=3.4,h=30, $fn=100);
+            translate([bwidth/2,30,bottom])cylinder(d=3.5,h=30, $fn=100);
+            translate([bwidth/2,35,bottom])cylinder(d=3.6,h=30, $fn=100);
+            translate([bwidth/2,40,bottom])cylinder(d=3.7,h=30, $fn=100);
+            translate([bwidth/2,45,bottom])cylinder(d=3.8,h=30, $fn=100);
+            translate([bwidth/2,50,bottom])cylinder(d=3.9,h=30, $fn=100);
+            translate([bwidth/2,55,bottom])cylinder(d=4.0,h=30, $fn=100);   
+        } 
+    }
+}
+
+//rotate([0,180,0]) draw_topplate(true);
+
+//drawkeyboard(0);
+//printdemo();
+//draw_samplekey();
+//draw_singlekey_test();
+
+draw_bottomplate();
+//test_insert();
+//rotate ([0,180,0] )draw_topplate(35);
+//draw_testplate();
+
+// Print keycaps in 4 block for easy printing
+//keycap(0,false);
+//keycap(1,false);
+//keycap(2,false);
+//keycap(3,false);
+//keycap(0,true);
+//keycap(1,true);
+//keycap(2,true);
+//keycap(3,true);
+
+
+
 
 
 

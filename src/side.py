@@ -5,4 +5,5 @@ banner = "--------------------------\nAvalanche left side\n---------------------
 #split_side = SplitSide.RIGHT
 #banner = "--------------------------\nAvalanche right side\n--------------------------"
 debug=True
+usebluetooth=False
 
