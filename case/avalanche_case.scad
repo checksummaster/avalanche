@@ -1,6 +1,8 @@
 include <./KeyV2/includes.scad>
  
 $font = "Segoe UI Symbol:style=Bold";
+//$font="DejaVu Sans Mono:style=Book";
+$font_size = 2;
 
 pcb_points = [[81.740171,110.323135],[124.110371,108.485434],[128.598892,127.733396],[146.996902,123.971322],[166.055043,123.967253],[166.055043,123.967253],[184.617357,128.428034],[201.626725,137.085463],[215.993451,149.169715],[240.383745,120.615118],[226.372957,108.455818],[226.161832,54.667135],[217.209331,49.970723],[195.286002,49.2243],[195.285999,31.067171],[176.528893,30.77428],[176.235999,29.067181],[157.478899,28.774284],[157.186002,26.567173],[138.648897,26.56718],[138.356003,28.774278],[119.598893,29.067179],[119.306,32.314284],[77.780048,34.75951],[79.89412699992839,75.09852794741323],[60.85857,76.097056],[61.829661,94.593607],[80.86349449039737,93.59515583927146]];
 
@@ -9,13 +11,13 @@ top_point = [[81.740171,110.323135],[124.110371,108.485434],[128.598892,127.7333
 
 
 // Hole in comment are central and we make space for battery by remove it
-hole1 = [[210.899641, 123.194258],[137.384115, 46.836171],/*[139.021284, 64.413276],[177.151281, 68.923262],*/[80.333192, 89.113988],[99.48792, 90.613548],[97.46632, 51.538002],/*[98.49095, 71.589648],*/[168.023177, 107.422185],[145.253172, 107.34218],[190.393201, 112.772207],[177.524117, 48.836171]];
+hole1 = [[210.899641, 123.194258],[137.384115, 46.836171],/*[139.021284, 64.413276],[177.151281, 68.923262],*//*[80.333192, 89.113988],*/[99.48792, 90.613548],[97.46632, 51.538002],/*[98.49095, 71.589648],*/[168.023177, 107.422185],/*[145.253172, 107.34218],*/[190.393201, 112.772207],[177.524117, 48.836171]];
 
 hole2 = [[223.247088, 101.330639],[200.247094, 89.630633],[223.247095, 56.930644]];
 
 // Screw size for top
 screwheadheight = 5; //TODO mesure it
-screwheaddiameter = 4;
+screwheaddiameter = 4.5;
 screwholesize = 2.4;
 
 // Magnets place
@@ -33,12 +35,16 @@ bottom_plate_to_pcb = 6; // Bottom spacer (Space for battery)
 
 bordersize = 0.5; // wall over the top  plate
 
-keyhole_size = 13.8;
-potsize_width = 7.7;    // Small rectangle to give space where potentiometer can be set
-potsize_height = 16.7;  // 
+keyhole_size = 14.1;
+potsize_width = 8.0;    // Small rectangle to give space where potentiometer can be set
+potsize_height = 17;  // 
+keytol = 0;
 
-EVQWGD001_widht = 17;
-EVQWGD001_height = 14;
+
+    //w = 17.1;
+    //h = 14.3;
+EVQWGD001_widht = 17.1+0.4+3; //18.8;
+EVQWGD001_height = 14.3+0.4+3+4;//16; //14;
 
 
 tolerance=0.5; // distance between pcb and wall
@@ -150,8 +156,8 @@ keyrow2 = [
 keycol2  = [   
     1, 2, 3, 4, 5, 6,                   6, 5, 4, 3, 2, 1,     
     1, 2, 3, 4, 5, 6,                   6, 5, 4, 3, 2, 1,
- 3, 1, 2, 3, 4, 5, 6,                   6, 5, 4, 3, 2, 1, 6,
-    1, 2, 3, 4, 5, 6, 1, 2,       5, 4, 6, 5, 4, 3, 2, 1,
+ 3, 1, 2, 3, 4, 5, 6,                   6, 5, 4, 3, 2, 1, 3,
+    1, 2, 3, 4, 5, 6, 1, 2,       1, 2, 6, 5, 4, 3, 2, 1,
              1, 2, 3, 4, 5,       5, 4, 3, 2, 1 // <-space bar shape
 ];
 
@@ -160,7 +166,7 @@ keypage2  = [
     0, 0, 0, 0, 0, 0,                   1, 1, 1, 1, 1, 1,
  2, 0, 0, 0, 0, 0, 0,                   1, 1, 1, 1, 1, 1, 2,
     0, 0, 0, 0, 0, 0, 2, 2,       2, 2, 1, 1, 1, 1, 1, 1,
-             3, 3, 3, 3, 3,       3, 3, 3, 3, 3 // <-space bar shape
+             2, 2, 2, 2, 2,       2, 2, 2, 2, 2 // <-space bar shape
 ];
 
 
@@ -216,7 +222,7 @@ func_text = [
             "",  "",   "⬤", "▲", "⬤",  "⌫",                             "Del","⌂  ","▲", "END", "PgUp",   "",
        "Lock",  "",  "APP","◀", "▼", "▶",  "Del",                               "⌫", "◀",   "▼", "▶",   "PgDn",   "",   "F12",
             "",  "",   "",   "⬤",   "",   "",  "", "",          "",  "",  "",   "PgUp",    "PgDn", "",  "",     "",
-                                "",   "",  "",  "", "" ,     "",  "1",  "", "2", ""
+                                "",   "",  "",  "", "" ,     "",  "Lower",  "", "Raise", ""
 ];
 
 func_text2 = [   
@@ -281,10 +287,11 @@ module drawkey(height, have_EVQWGD001) {
             rotate(a=[0,0,-point[2]]  ) {
                 if (have_EVQWGD001 && a == 30) {
                     cube(size = [EVQWGD001_widht,EVQWGD001_height,height] , center = true);
+                    //translate([0,3,0]) cube(size = [EVQWGD001_widht,EVQWGD001_height,height] , center = true); // Remove the notch
                 }
                 else {
-                    cube(size = [keyhole_size,keyhole_size,height] , center = true);
-                    if (a == 20 || a == 27 || a == 30 ) cube(size = [potsize_width,potsize_height,height] , center = true);
+                    cube(size = [keyhole_size+keytol,keyhole_size+keytol,height] , center = true);
+                    if (a == 20 || a == 27 || a == 30 ) cube(size = [potsize_width+keytol,potsize_height+keytol,height] , center = true);
                 }
             }
         }
@@ -321,35 +328,35 @@ module draw_topplate(isright=false) {
 }
 
 module _draw_testplate(add=0) {
+    add2 = add + keytol;
     difference() {
         color("green",0.25) cube([65,25,top_plate_thickness]);
         translate([0,10,0]) union() {
             translate([15,0,0]) {
-                union() { // EVQWGD001 or pot
-                    cube(size = [EVQWGD001_widht+add,EVQWGD001_height+add,3*top_plate_thickness] , center = true);
-                    cube(size = [potsize_width+add,potsize_height+add,3*top_plate_thickness] , center = true);
-                }
+                //union() { // EVQWGD001 or pot
+                    cube(size = [EVQWGD001_widht+add2,EVQWGD001_height+add2,3*top_plate_thickness] , center = true);
+                    //cube(size = [potsize_width+add2,potsize_height+add2,3*top_plate_thickness] , center = true);
+                //}
             }
             
-            translate([35,0,0]) { //swith
+            translate([35,0,0]) { 
             union() { // Potentio
-                    cube(size = [keyhole_size+add,keyhole_size+add,3*top_plate_thickness] , center = true);
-                    cube(size = [potsize_width+add,potsize_height+add,3*top_plate_thickness] , center = true);
+                    cube(size = [keyhole_size+add2,keyhole_size+add2,3*top_plate_thickness] , center = true);
+                    cube(size = [potsize_width+add2,potsize_height+add2,3*top_plate_thickness] , center = true);
                 } 
             }
             
             translate([55,0,0]) { //swith
-                cube(size = [keyhole_size+add,keyhole_size+add,3*top_plate_thickness] , center = true);
+                cube(size = [keyhole_size+add2,keyhole_size+add2,3*top_plate_thickness] , center = true);
             }
         }
     }
 }
 
 module draw_testplate(add=0) {
-    translate([0,0*25,0]) _draw_testplate(0);
-    translate([0,1*25,0]) _draw_testplate(1);
-    translate([0,2* 25,0]) _draw_testplate(2);
-    translate([0,3* 25,0]) _draw_testplate(3);
+    translate([0,0*25,0]) _draw_testplate(-0.1);
+    translate([0,1*25,0]) _draw_testplate(0.0);
+    translate([0,2* 25,0]) _draw_testplate(0.1);
 }
 
 module draw_bottomplate() {
@@ -401,14 +408,14 @@ module draw_bottomplate() {
 }
 
 
-module drawkeycap(height,offset)
+module drawkeycap(height,offset,makelegend=false)
 {
     for (a = [ 0 : len(keys) - 1 ]) {
         if (a == 6 || a == 13 || a == 29 ) {
         } else if (a == 30 ) {
             draw_pot(a,height,offset);
         } else {
-            drawkeycap_single(a,height,offset,offset==0?true:false);
+            drawkeycap_single(a,height,offset,offset==0?true:false,null,0,makelegend);
         }
     }
 }
@@ -460,11 +467,34 @@ module drawkeycap_single(a,height,offset,inv,layoutmode,page,makelegend) {
     funckey2 = func_text2[ind[0]];
     
     r = layoutmode?180:(point[2] + [0,0,0,0,0,180][row]);
-    $inverted_dish = (row == 5);
-    $inset_legend_depth = 0.4;
-    $cherry_bevel = false;
+
+    //$cherry_bevel = false;
     //$stem_support_type = disabled;
     //$support_type = disable;
+    
+    
+    ///////////////////////
+    //$bottom_key_width = $unit - 0.5;
+    //$bottom_key_height = $unit - 0.5;
+  
+
+    
+    $dish_type = "disable";
+    $key_shape_type = "rounded_square";
+    $total_depth = 6;
+    $keytop_thickness = 1;
+    $wall_thickness = -1;
+    $top_tilt = 0;
+    $top_skew = 0;
+    $width_difference = 0;
+    $height_difference = 0;
+    
+    $stem_support_type = "disable";
+    
+    
+    
+    $inverted_dish = (row == 5);
+    $inset_legend_depth = 1;
     
     
 
@@ -476,38 +506,22 @@ module drawkeycap_single(a,height,offset,inv,layoutmode,page,makelegend) {
     
 
     
-        translate([point[0],point[1],height]) {
+        color([1.0,1.0,1.0,0.2]) translate([point[0],point[1],height]) {
              rotate(a=[layoutmode?angle_3d_print:0,0,-r ] ) mirror([inv?1:0,0,0]) {
                 specialcar = (text1 == "↵" || text1 == "␣" || text1 == "⌘")?true:false;
-                if (true) {
-                    if (makelegend)
-                    {
-                        intersection() {
-                        
-                            legend(text1, position = specialcar?[0,0]:[0,-0.8] , size=specialcar?10:len(text1) <4?4.5:3.5)
-                            legend(funckey, position = [0,+0.8] , size=len(funckey) == 1?4.5:3.5)
-                            front_legend(funckey2,position = [0,0] , size=len(funckey2) == 1?4.5:3.5)
-                            cherry_row(row)  legends($inset_legend_depth);
-                            
-                            
-                            cherry_row(row) key();
-                        }
-                        
-                        //difference() {
-                            //legends($inset_legend_depth);
-                            //inner_total_shape();
-                        //}
-                    }
-                    else {
+                
+                if (makelegend) {
+                        //key();
                         legend(text1, position = specialcar?[0,0]:[0,-0.8] , size=specialcar?10:len(text1) <4?4.5:3.5)
                         legend(funckey, position = [0,+0.8] , size=len(funckey) == 1?4.5:3.5)
-                        front_legend(funckey2,position = [0,0] , size=len(funckey2) == 1?4.5:3.5)
-                        brimmed_stem_support()
-                        cherry_row(row)  key();
-                    } 
+                        legend(funckey2, position = len(funckey2) == 1 ? [1.0,0]:[+0.8,+1.4] , size=len(funckey2) == 1 ? 4.0:2.1)
+                        legends($inset_legend_depth);
                 } else {
-                    cherry_row(row)  key();
-                }
+                    legend(text1, position = specialcar?[0,0]:[0,-0.8] , size=specialcar?10:len(text1) <4?4.5:3.5)
+                    legend(funckey, position = [0,+0.8] , size=len(funckey) == 1?4.5:3.5)
+                    legend(funckey2, position = len(funckey2) == 1 ? [1.0,0]:[+0.8,+1.4] , size=len(funckey2) == 1 ? 4.0:2.1)
+                    key();
+                }   
             }
         }
     }
@@ -515,9 +529,8 @@ module drawkeycap_single(a,height,offset,inv,layoutmode,page,makelegend) {
 
 module keycap(page,legend)
 {
-    translate([0,0,0]) drawkeycap_inline(35,page,legend);
-    translate([330,0,0]) mirror([1,0,0]) drawkeycap_inline(0,page,legend);
-
+    drawkeycap_inline(35,page,legend);
+    translate([133,0,0]) mirror([1,0,0]) drawkeycap_inline(0,page,legend);
 }
 
 
@@ -545,16 +558,16 @@ module draw_singlekey_test()
 
 module drawkeyboard(keyoffset)
 {
-    draw_bottomplate();
-    translate([0,0,bottom_plate_thickness + bottom_plate_to_pcb + pcb_thickness + top_plate_to_pcb ]) rotate([0,0,0]) draw_topplate(keyoffset==35);
+    color("black") draw_bottomplate();
+    color("black") translate([0,0,bottom_plate_thickness + bottom_plate_to_pcb + pcb_thickness + top_plate_to_pcb ]) rotate([0,0,0]) draw_topplate(keyoffset==35);
     drawkeycap(20,keyoffset);
 
 }
 
 
 module printdemo() {
-    translate([-250,0,0]) drawkeyboard(35);
-    translate([250,0,0]) mirror([1,0,0]) drawkeyboard(0);
+    translate([-250,0,0])   drawkeyboard(35);
+    translate([250,0,0]) mirror([1,0,0])   drawkeyboard(0);
 }
 
 module test_insert()
@@ -580,27 +593,101 @@ module test_insert()
     }
 }
 
-//rotate([0,180,0]) draw_topplate(true);
+module evqwg001()
+{
+    foot = 2 + 1.6; // Space under metal part (should include plastic foot + room for wire
+    size = 6 + foot;
+    w = 17.1;
+    h = 14.3;
+    wall = 2.5;
+    pinsize = 1.2;
+    pinspace = 2.54;
+    correction = 1; // make cut longer 
+    addtopbottom=2;
+    difference(){
+        union() {
+            difference(){
+                cube([w+wall,h+wall+2*addtopbottom,size]); // Wall
+                translate([wall/2,wall/2+addtopbottom,-correction/2]) cube([w,h,size+correction]); // Big cut
+            }
+            
+            translate([w+wall-12,h+.5+addtopbottom,size-6]) difference(){ // Small upper right block
+                cube([12,1.2,6]); 
+                translate([12-2,-correction/2,-correction/2]) cube([2,1.2+correction,4+correction]);
+            }
+        }
+        
+        correction2 = 0.2;
+        pinlen = size ;
+        //w/2-(4*pinsize)/2
+        translate([wall/2+w/2-(2*pinspace+pinsize)/2,wall/2-pinsize/2+correction2-pinsize/2+addtopbottom,-1]) union() {
+            // pin            
+            union() {
+                color("red") cube([pinsize,h+1.5*pinsize,pinlen] );
+                color("red") translate([pinspace,0,0]) cube([pinsize,h+1.5*pinsize,pinlen]);
+                color("red") translate([2*pinspace,0,0])cube([pinsize,h+1.5*pinsize,pinlen]);
+            }
+            
+            translate([-4.5,-1* pinsize,0]) color("red") cube([15,h+3.5*pinsize,4]);
+        }
+        
+        translate([-1,0,7]) rotate([45,0,0]) color("green") cube([w+wall*2,4+2,4]);
+        translate([-1,h+wall+2*addtopbottom,7]) rotate([45,0,0]) color("green") cube([w+wall*2,4+2,4]);
+        
+        //color("red") translate([(w+wall)/2-6,-wall/2,7]) cube([12,2*wall,3]); 
+        
+    }    
+}
 
-//drawkeyboard(0);
-//printdemo();
-//draw_samplekey();
-//draw_singlekey_test();
+module maketemplate() {
+    rotate([0,0,180]) projection(){
+        color("black") translate([-250,0,0]) drawkeycap(20,35, true); 
+        color("black")  translate([250,0,0]) mirror([1,0,0]) drawkeycap(20,0,true);
+    }
+}
 
-draw_bottomplate();
-//test_insert();
-//rotate ([0,180,0] )draw_topplate(35);
-//draw_testplate();
+module makeallkey() {
+    rotate([0,0,180]) union(){
+        translate([-250,0,0]) drawkeycap(20,35); 
+        translate([250,0,0]) mirror([1,0,0]) drawkeycap(20,0);
+    }
+}
+
+
+
+
+
+
+//drawkeyboard(0); // Draw all right side
+//printdemo();     // Draw all
+
+//evqwg001();      // Draw insert for and evqwg001 to convert to encoder
+
+                 
+makeallkey(); // Draw all keycaps
+//maketemplate(); // Draw all keycaps text
+//draw_singlekey_test();                                                                          // Draw one keycap 
+// draw_samplekey();                                                                               // Draw some selected keycaps 
+
+
+
+//test_insert();                                                            // Make a small print to test insert
+//draw_testplate();                                                         // Draw a plate to test key tolerances
+
+//draw_bottomplate();                                                       // Draw right bottom plate (case)
+//rotate ([0,180,0] )draw_topplate(35);                                     // Draw right top plate
+//rotate ([0,180,0] ) mirror([1,0,0]) draw_topplate(0);                     // Draw left top plate  
+
 
 // Print keycaps in 4 block for easy printing
 //keycap(0,false);
 //keycap(1,false);
 //keycap(2,false);
-//keycap(3,false);
+
 //keycap(0,true);
 //keycap(1,true);
 //keycap(2,true);
-//keycap(3,true);
+
 
 
 
