@@ -1,0 +1,15 @@
+encoder                 evqwgd001
+
+abc		       nc  | | |     	
+d e                    b --|-| |
+                       c --|-|-|
+                       a --|
+			d e
+			| |-------|
+                        |-----|   |
+
+a = outa
+b = gnd
+c = outb
+d = switch
+e = switch fnd
