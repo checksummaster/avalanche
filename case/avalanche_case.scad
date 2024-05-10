@@ -1,7 +1,6 @@
 include <./KeyV2/includes.scad>
  
-$font = "Segoe UI Symbol:style=Bold";
-//$font="DejaVu Sans Mono:style=Book";
+$font = "DejaVu Sans:style=Bold";
 $font_size = 2;
 
 pcb_points = [[81.740171,110.323135],[124.110371,108.485434],[128.598892,127.733396],[146.996902,123.971322],[166.055043,123.967253],[166.055043,123.967253],[184.617357,128.428034],[201.626725,137.085463],[215.993451,149.169715],[240.383745,120.615118],[226.372957,108.455818],[226.161832,54.667135],[217.209331,49.970723],[195.286002,49.2243],[195.285999,31.067171],[176.528893,30.77428],[176.235999,29.067181],[157.478899,28.774284],[157.186002,26.567173],[138.648897,26.56718],[138.356003,28.774278],[119.598893,29.067179],[119.306,32.314284],[77.780048,34.75951],[79.89412699992839,75.09852794741323],[60.85857,76.097056],[61.829661,94.593607],[80.86349449039737,93.59515583927146]];
@@ -232,6 +231,44 @@ func_text2 = [
             "",  "0",  "1",  "2", "3",   ".",  "", "",          "", "","", "", "", "",      "",      "",
                                 "",   "",  "",  "", "Alt" ,     "Alt",  "", "", "", ""
 ];
+
+module _testfont(font)
+{
+    color("black") translate([0,-($font_size+1),0]) text(font,size=$font_size);
+    for (a = [0 : len (main_text) -1]) {
+        color("black") translate([0,a*($font_size+1),0]) linear_extrude(0.1) text(main_text[a], size=$font_size,font=font);
+    }
+    for (a = [0 : len (func_text) -1]) {
+        color("black") translate([10,a*($font_size+1),0]) linear_extrude(0.1) text(func_text[a], size=$font_size,font=font);
+    }
+    for (a = [0 : len (func_text2) -1]) {
+        color("black") translate([20,a*($font_size+1),0]) linear_extrude(0.1) text(func_text2[a], size=$font_size,font=font);
+    }
+}
+
+module testfont()
+{
+    fonts = [
+        //"Segoe MDL2 asset:style=Bold",
+        "Segoe UI Symbol",
+        //"Segoe UI Emoji",
+        //"Segoe UI",
+        //"Lucida Bright",
+        //"Stencil",
+        //"Rafale:style=BG",
+        //"Open Sans:style=Bold",
+        //"Open Sans",
+        "DejaVu Sans",
+        "DejaVu Sans:style=Bold",
+        "DejaVu Sans:style=Condensed",
+        "DejaVu Sans:style=Book",
+    ];
+    for (a = [0 : len (fonts) -1]) {
+        translate([a*40,0,0])  _testfont(fonts[a]);
+    }
+        
+
+}
 
 
 
@@ -669,7 +706,7 @@ makeallkey(); // Draw all keycaps
 //draw_singlekey_test();                                                                          // Draw one keycap 
 // draw_samplekey();                                                                               // Draw some selected keycaps 
 
-
+// testfont();          // Draw keycaps text with multiple font to choose a good font
 
 //test_insert();                                                            // Make a small print to test insert
 //draw_testplate();                                                         // Draw a plate to test key tolerances
